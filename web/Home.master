@@ -1,0 +1,157 @@
+﻿<%@ Master Language="C#" %>
+
+<!DOCTYPE html>
+
+<script runat="server">
+
+    protected void ImgBtn_Logout_Click(object sender, ImageClickEventArgs e) {
+        Session.Clear();
+        Session.Abandon();
+        Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.Cache.SetNoStore();
+
+        try
+        {
+            Session.Abandon();
+            FormsAuthentication.SignOut();
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Buffer = true;
+            Response.ExpiresAbsolute = DateTime.Now.AddDays(-1d);
+            Response.Expires = -1000;
+            Response.CacheControl = "no-cache";
+            //Response.Redirect("login.aspx", true);
+        }
+        catch (Exception ex)
+        {
+            Response.Write(ex.Message);
+        }
+        Response.Redirect("Login.aspx");
+    }
+    
+</script>
+
+<html>
+<head runat="server">
+    <meta charset="UTF-8">
+    <title>NetStore小小商店</title>
+    <link rel="stylesheet" href="css/style2.css" type="text/css">
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="page">
+            <div id="sidebar">
+                <a href="Default.aspx" class="logo">
+                    <img src="images/logo.jpg" alt="首頁"></a>
+                <ul>
+                    <li>
+                        <%--<span><a href="Default.aspx">首頁</a></span>--%>
+                        <asp:ImageButton ID="ImgBtn_Index" runat="server" ImageUrl="~/images/btn/btn_House.png" onmouseover="this.src='images/btn/btn_House_lt.png'" onmouseout="this.src='images/btn/btn_House.png'" PostBackUrl="~/Product.aspx" Height="40px" Width="144px" />
+                    </li>
+                    <li>
+                        <%--<a href="Top10.aspx">排行榜</a>--%>
+                        <asp:ImageButton ID="ImgBtn_Top10" runat="server" ImageUrl="~/images/btn/btn_Top10.png" onmouseover="this.src='images/btn/btn_Top10_lt.png'" onmouseout="this.src='images/btn/btn_Top10.png'" PostBackUrl="~/Top10.aspx" Height="40px" Width="144px" />
+                    </li>
+                    <li>
+                        <%--<a href="Search.aspx">查詢</a>--%>
+                        <asp:ImageButton ID="ImgBtn_Search" runat="server" ImageUrl="~/images/btn/btn_Search.png" onmouseover="this.src='images/btn/btn_Search_lt.png'" onmouseout="this.src='images/btn/btn_Search.png'" PostBackUrl="~/Search.aspx" Height="40px" Width="144px" />
+                    </li>
+                    <li>
+                        <%--<a href="Publishers.aspx">出品社</a>--%>
+                        <asp:ImageButton ID="Publishers" runat="server" ImageUrl="~/images/btn/btn_Publishers.png" onmouseover="this.src='images/btn/btn_Publishers_lt.png'" onmouseout="this.src='images/btn/btn_Publishers.png'" PostBackUrl="~/Publishers.aspx" Height="40px" Width="144px" />
+                    </li>
+                    <li>
+                        <%--<a href="MyFavorite.ashx">我的最愛</a>--%>
+                        <asp:ImageButton ID="ImgBtn_MyFavorite" runat="server" ImageUrl="~/images/btn/btn_Love.png" onmouseover="this.src='images/btn/btn_Love_lt.png'" onmouseout="this.src='images/btn/btn_Love.png'" PostBackUrl="~/MyFavorite.ashx" Height="40px" Width="144px" />
+                    </li>
+                    <li>
+                        <a href="Cart.aspx">
+                            <%= HttpContext.Current.User.Identity.Name %>
+                         購物車</a>
+                    </li>
+                    <li>
+                        <a href="About.aspx">關於我</a>
+                    </li>
+                    <%--<li>
+                        <a href="Checkout.aspx">結帳</a>
+                    </li>--%>
+                </ul>
+                <div class="contact">
+                    <ul>
+                        <li class="address">
+                            <span>address</span>
+                            <ul>
+                                <li>123 Canyon Road
+                                </li>
+                                <li>Beverly Hills, CA 12345
+                                </li>
+                                <li>USA
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="contactInfo">
+                            <span>contact info</span>
+                            <ul>
+                                <li>+01.234.456.786
+                                </li>
+                                <li>+01.345.678.890
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="mail">
+                            <span>email</span>
+                            <ul>
+                                <li>
+                                    <a href="#">info@paredeswinery.com</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="connect">
+                    <b>follow us</b>
+                    <p>
+                        In hendrerit sollicitudin eros, sit amet tincidunt magna condimentum id.
+                    </p>
+                    <ul>
+                        <li id="facebook">
+                            <a href="http://freewebsitetemplates.com/go/facebook/">facebook</a>
+                        </li>
+                        <li id="twitter">
+                            <a href="http://freewebsitetemplates.com/go/twitter/">twitter</a>
+                        </li>
+                        <li id="googleplus">
+                            <a href="http://freewebsitetemplates.com/go/googleplus/">googleplus</a>
+                        </li>
+                        <li id="connectemail">
+                            <a href="http://www.freewebsitetemplates.com/misc/contact">email</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="newsletter">
+                    <b>join our mailing list</b>
+                    <input type="text" name="email" value="Enter email-address" id="email">
+                    <input type="submit" name="submit1" value="Sign up!" id="submit1">
+                </div>
+            </div>
+            <div id="header">
+                <img src="images/mountains.jpg" alt="">
+                <h1>NetStore</h1><br/>
+                <asp:ImageButton ID="ImgBtn_Login" runat="server" ImageUrl="~/images/btn/btn_User.png" onmouseover="this.src='images/btn/btn_User_lt.png'" onmouseout="this.src='images/btn/btn_User.png'" PostBackUrl="Login.aspx" />
+                <asp:ImageButton ID="ImgBtn_ShoppingCart" runat="server" ImageUrl="~/images/btn/btn_Shopping-Cart.png" onmouseover="this.src='images/btn/btn_Shopping-Cart_lt.png'" onmouseout="this.src='images/btn/btn_Shopping-Cart.png'" PostBackUrl="Cart.aspx" />
+                <asp:ImageButton ID="ImgBtn_Checkout" runat="server" ImageUrl="~/images/btn/btn_Checkout.png" onmouseover="this.src='images/btn/btn_Checkout_lt.png'" onmouseout="this.src='images/btn/btn_Checkout.png'" PostBackUrl="~/Checkout.aspx" />
+                <asp:ImageButton ID="ImgBtn_Logout" runat="server" ImageUrl="~/images/btn/logout.png" onmouseover="this.src='images/btn/logout_lt.png'" onmouseout="this.src='images/btn/logout.png'" OnClick="ImgBtn_Logout_Click" />
+            </div>
+            <div id="body">
+                <asp:ContentPlaceHolder ID="nsMain" runat="server"></asp:ContentPlaceHolder>
+            </div>
+            <div id="footer">
+                <p>
+                    Copyright &copy; NetStore小小商店 all rights reserved. | <a href="Default.aspx">Terms of use</a>
+                </p>
+            </div>
+        </div>
+
+    </form>
+</body>
+</html>
